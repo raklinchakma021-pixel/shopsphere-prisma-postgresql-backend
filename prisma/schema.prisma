@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum ReviewStatus {
+  ACTIVE
+  HIDDEN
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole @default(USER)
+
+  reviews Review[]
+  orders  Order[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Category {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  products Product[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@map("categories")
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal       @db.Decimal(10, 2)
+  stock       Int           @default(0)
+  status      ProductStatus @default(ACTIVE)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  reviews Review[]
+  orders  Order[]
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([status])
+  @@map("products")
+}
+
+model Review {
+  id      String  @id @default(uuid())
+  rating  Int
+  comment String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  status ReviewStatus @default(ACTIVE)
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+  @@map("reviews")
+}
+
+model Order {
+  id       String      @id @default(uuid())
+  quantity Int         @default(1)
+  total    Decimal     @db.Decimal(10, 2)
+  status   OrderStatus @default(PENDING)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+  @@map("orders")
+}
