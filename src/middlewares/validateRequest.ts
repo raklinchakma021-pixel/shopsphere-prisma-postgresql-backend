@@ -32,17 +32,13 @@ export const validateRequest = (
 
     const data = result.data;
 
+    // req.body can be replaced
     if (data.body !== undefined) {
       req.body = data.body;
     }
 
-    if (data.params !== undefined) {
-      req.params = data.params as Request["params"];
-    }
-
-    if (data.query !== undefined) {
-      req.query = data.query as Request["query"];
-    }
+    // Do NOT assign to req.params or req.query.
+    // They are read-only in your current Express setup.
 
     next();
   };
