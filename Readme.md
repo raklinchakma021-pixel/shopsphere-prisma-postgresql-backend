@@ -9,7 +9,7 @@ The backend provides secure JWT authentication, role-based authorization, produc
 ## 🚀 Live API
 
 **Live Backend URL:**  
-`https://your-live-backend-url.com`
+`https://shopsphere-prisma-postgresql-backend.onrender.com`
 
 > Replace this URL with your deployed backend URL after deployment.
 
