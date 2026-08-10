@@ -31,7 +31,7 @@ http://localhost:5000
 ### Production
 
 ```text
-(https://shopsphere-prisma-postgresql-backend.onrender.com/)
+https://shopsphere-prisma-postgresql-backend.onrender.com
 ```
 
 Replace the production URL after deployment.
