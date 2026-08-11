@@ -29,12 +29,16 @@ http://localhost:5000
 ```
 
 ### Production
-
+Backend: 
 ```text
 https://shopsphere-prisma-postgresql-backend.onrender.com
 ```
-
-Replace the production URL after deployment.
+Frontend Live: 
+```text
+https://shopsphere-prisma-postgresql-fronte.vercel.app
+```
+Frontend Repository: 
+https://github.com/raklinchakma021-pixel/shopsphere-prisma-postgresql-frontend
 
 ---
 
